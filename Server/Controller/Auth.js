@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
       confirmPassword,
       accountType,
       contactNumber,
-      otp,
+      otp,                                    //this is the otp entered by the user which will be matched with the otp stored in database
     } = req.body;
 
     if (
@@ -50,7 +50,11 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);          //of all the otp stored in datbase we are fetching  the one on top
+    // sort({ createdAt: -1 }).limit(1);           -> this is a query
+    // Restricts Results: By adding limit(1), you instruct the database to stop searching and return only the first matching result it finds.
+    // sort({ createdAt: -1 }): This sorts the documents in descending order based on the createdAt field. The -1 indicates descending order, 
+    // meaning the most recent documents will come first.
     console.log(response);
     if (!response.length) {
       return res.status(400).json({
@@ -84,7 +88,7 @@ exports.signup = async (req, res) => {
       accountType: accountType,
       approved: approved,
       additionalDetails: profileDetails._id,
-      image: "",
+      image: "",                  //here we want default image made from first letter of first name and last name
     });
 
     return res.status(200).json({
@@ -185,6 +189,7 @@ exports.sendotp = async (req, res) => {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
       });
+      result = await OTP.findOne({ otp: otp });
     }
     const otpPayload = { email, otp };
     const otpBody = await OTP.create(otpPayload);
