@@ -27,7 +27,8 @@ async function sendVerificationEmail(email, otp) {
 }
 
 OTPSchema.pre("save", async function (next) {
-  if (this.isNew) {
+  if (this.isNew) {                                                                //this.isNew is a property that indicates whether a document is
+    // new or not. This property is typically used within the context of Mongoose schema methods and middleware
     await sendVerificationEmail(this.email, this.otp);
   }
   next();
