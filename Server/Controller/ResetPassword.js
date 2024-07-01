@@ -12,7 +12,8 @@ exports.resetPasswordToken = async (req, res) => {                //responsible 
         message: `This Email: ${email} is not Registered With Us Enter a Valid Email `,
       })
     }
-    const token = crypto.randomBytes(20).toString("hex")
+    const token = crypto.randomBytes(20).toString("hex")                        //generates a random string which will be called token. this token will be mapped with
+    // the user using which we would  be able to access our user
 
     const updatedDetails = await User.findOneAndUpdate(
       { email: email },
@@ -25,7 +26,7 @@ exports.resetPasswordToken = async (req, res) => {                //responsible 
     console.log("DETAILS", updatedDetails)
 
     // const url = `http://localhost:3000/update-password/${token}`
-    const url = `https://studynotion-edtech-project.vercel.app/update-password/${token}`
+    const url = `https://studynotion-edtech-project.vercel.app/update-password/${token}`          //url of our frontend
 
     await mailSender(
       email,
@@ -49,7 +50,7 @@ exports.resetPasswordToken = async (req, res) => {                //responsible 
 
 exports.resetPassword = async (req, res) => {                          //reponsibel for updating the password on db
   try {
-    const { password, confirmPassword, token } = req.body
+    const { password, confirmPassword, token } = req.body                        //req ki body ke andar token ko frontend ne daal ke bheja hoga
 
     if (confirmPassword !== password) {
       return res.json({
@@ -57,7 +58,8 @@ exports.resetPassword = async (req, res) => {                          //reponsi
         message: "Password and Confirm Password Does not Match",
       })
     }
-    const userDetails = await User.findOne({ token: token })
+    const userDetails = await User.findOne({ token: token })                    //under two cases we wouldnot be able to find token 1. if token doesnt exist
+    // 2. if expiration time has been exceeded
     if (!userDetails) {
       return res.json({
         success: false,
