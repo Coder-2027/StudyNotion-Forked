@@ -163,7 +163,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.sendotp = async (req, res) => {
+exports.sendotp = async (req, res) => {                            //will be called when we will click on sign up button
   try {
     const { email } = req.body;
 
