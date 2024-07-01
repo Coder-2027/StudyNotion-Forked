@@ -10,9 +10,9 @@ const mailSender = async (email, title, body) => {
         pass: process.env.MAIL_PASS,
       },
       tls: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: false,                                    //*****
       },
-      secure: false,
+      secure: false,                                                //*****
     });
     let info = await transporter.sendMail({
       from: `"StudyNotion" <${process.env.MAIL_USER}>`,
