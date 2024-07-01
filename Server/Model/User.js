@@ -37,12 +37,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    additionalDetails: {
+    additionalDetails: {                  //not an array because it is justa singlr entity
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Profile",
     },
-    courses: [
+    courses: [                            //making it as an array because we can have multiple courses for a user
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: {
       type: Date,
     },
-    image: {
+    image: {                          //because it is an url
       type: String,
     },
     courseProgress: [
