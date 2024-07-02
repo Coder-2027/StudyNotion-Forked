@@ -9,7 +9,7 @@ const { convertSecondsToDuration } = require("../Util/SecToDuration");
 
 exports.createCourse = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.id;                //user was put inside request when the user logged in
 
     let {
       courseName,
