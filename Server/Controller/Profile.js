@@ -20,7 +20,7 @@ exports.updateProfile = async (req, res) => {
     const id = req.user.id;
 
     const userDetails = await User.findById(id);
-    const profile = await Profile.findById(userDetails.additionalDetails);
+    const profile = await Profile.findById(userDetails.additionalDetails);                      //because we created a dummy profile containing null in all fields
 
     const user = await User.findByIdAndUpdate(id, {
       firstName,
@@ -33,7 +33,7 @@ exports.updateProfile = async (req, res) => {
     profile.contactNumber = contactNumber;
     profile.gender = gender;
 
-    await profile.save();
+    await profile.save();                    //inorder to use save method we create an object first, and above we have already created object which we are updating
 
     const updatedUserDetails = await User.findById(id)
       .populate("additionalDetails")
@@ -66,8 +66,11 @@ exports.deleteAccount = async (req, res) => {
     }
 
     await Profile.findByIdAndDelete({
-      _id: new mongoose.Types.ObjectId(user.additionalDetails),
+      _id: new mongoose.Types.ObjectId(user.additionalDetails),              //here we have profile id in form of string inside user whereas we want it in the 
+      // form of object id so to convert it in the form of object
     });
+
+    //deleting the user from enrolled courses
     for (const courseId of user.courses) {
       await Course.findByIdAndUpdate(
         courseId,
