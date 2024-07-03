@@ -4,7 +4,7 @@ const SubSection = require("../Model/SubSection");
 
 exports.createSection = async (req, res) => {
   try {
-    const { sectionName, courseId } = req.body;
+    const { sectionName, courseId } = req.body;                  //we will get course id because before creating section course has been created
 
     if (!sectionName || !courseId) {
       return res.status(400).json({
@@ -24,7 +24,7 @@ exports.createSection = async (req, res) => {
       },
       { new: true }
     )
-      .populate({
+      .populate({                                                //IMP for populating both section and subsection
         path: "courseContent",
         populate: {
           path: "subSection",
@@ -49,7 +49,7 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
   try {
     const { sectionName, sectionId, courseId } = req.body;
-    const section = await Section.findByIdAndUpdate(
+    const section = await Section.findByIdAndUpdate(                        //it will automatically get updated in courses as we have id stored there
       sectionId,
       { sectionName },
       { new: true }
