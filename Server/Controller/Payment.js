@@ -39,7 +39,7 @@ exports.capturePayment = async (req, res) => {
     }
   }
   const options = {
-    amount: total_amount * 100,
+    amount: total_amount * 100,                      //it is a requirement of razorpay to send amt after multiplying it by 100...
     currency: "INR",
     receipt: Math.random(Date.now()).toString(),                  //Date.now() returns the number of milliseconds since January 1, 1970. -> for uniqueness
   };
@@ -76,7 +76,8 @@ exports.verifyPayment = async (req, res) => {
   }
   let body = razorpay_order_id + "|" + razorpay_payment_id;
 
-// Both bcrypt and Node.js’s built-in crypto module are used for cryptographic operations, but they serve different purposes and have distinct features. Here’s a comparison to help you understand their differences and use cases:
+// Both bcrypt and Node.js’s built-in crypto module are used for cryptographic operations, but they serve different purposes and have distinct 
+  // features. Here’s a comparison to help you understand their differences and use cases:
   // bcrypt
 // Purpose: Primarily used for hashing passwords securely.
 
@@ -86,6 +87,16 @@ exports.verifyPayment = async (req, res) => {
 // Purpose:
 // bcrypt: Specifically designed for password hashing with built-in salting and adjustable computational cost.
 // crypto: General-purpose cryptographic library supporting a wide range of operations.
+
+
+//   crypto.createHmac("sha256", process.env.RAZORPAY_SECRET):
+// This creates an HMAC (Hash-based Message Authentication Code) using the SHA-256 hashing algorithm.
+// process.env.RAZORPAY_SECRET is the secret key used for the HMAC. This key is typically stored in environment variables for security reasons.
+// .update(body.toString()):
+// The update method adds the data to be hashed. In this case, body.toString() converts the body object to a string format.
+// This is the data that will be hashed using the HMAC.
+// .digest("hex"):
+// The digest method finalizes the HMAC computation and returns the result as a hexadecimal string.
 
   
   const expectedSignature = crypto
