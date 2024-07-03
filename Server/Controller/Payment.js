@@ -11,7 +11,7 @@ const { paymentSuccessEmail } = require("../Mail/Template/PaymentSuccessEmail");
 const CourseProgress = require("../Model/CourseProgress");
 
 exports.capturePayment = async (req, res) => {
-  const { courses } = req.body;
+  const { courses } = req.body;                      //here courses is an array of courses added to cart
   const userId = req.user.id;
   if (!courses.length) {
     return res.json({ success: false, message: "Please Provide Course ID" });
@@ -41,7 +41,7 @@ exports.capturePayment = async (req, res) => {
   const options = {
     amount: total_amount * 100,
     currency: "INR",
-    receipt: Math.random(Date.now()).toString(),
+    receipt: Math.random(Date.now()).toString(),                  //Date.now() returns the number of milliseconds since January 1, 1970. -> for uniqueness
   };
   try {
     const paymentResponse = await instance.orders.create(options);
@@ -59,7 +59,8 @@ exports.capturePayment = async (req, res) => {
 };
 
 exports.verifyPayment = async (req, res) => {
-  const razorpay_order_id = req.body?.razorpay_order_id;
+  const razorpay_order_id = req.body?.razorpay_order_id;                            //this request is coming from razorpay after payment being successfull we are 
+  // hitting webhook
   const razorpay_payment_id = req.body?.razorpay_payment_id;
   const razorpay_signature = req.body?.razorpay_signature;
   const courses = req.body?.courses;
@@ -74,10 +75,26 @@ exports.verifyPayment = async (req, res) => {
     return res.status(200).json({ success: false, message: "Payment Failed" });
   }
   let body = razorpay_order_id + "|" + razorpay_payment_id;
+
+// Both bcrypt and Node.js’s built-in crypto module are used for cryptographic operations, but they serve different purposes and have distinct features. Here’s a comparison to help you understand their differences and use cases:
+  // bcrypt
+// Purpose: Primarily used for hashing passwords securely.
+
+// crypto
+// Purpose: Provides a wide range of cryptographic functionalities, including hashing, encryption, and HMAC.
+
+// Purpose:
+// bcrypt: Specifically designed for password hashing with built-in salting and adjustable computational cost.
+// crypto: General-purpose cryptographic library supporting a wide range of operations.
+
+  
   const expectedSignature = crypto
     .createHmac("sha256", process.env.RAZORPAY_SECRET)
     .update(body.toString())
     .digest("hex");
+  //above expectedSignature is for converting our secret key into same format in which we have secret coming from razorpay
+  
+  
   if (expectedSignature === razorpay_signature) {
     await enrollStudents(courses, userId, res);
     return res.status(200).json({ success: true, message: "Payment Verified" });
