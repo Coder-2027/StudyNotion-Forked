@@ -102,7 +102,7 @@ exports.verifyPayment = async (req, res) => {
   const expectedSignature = crypto
     .createHmac("sha256", process.env.RAZORPAY_SECRET)
     .update(body.toString())
-    .digest("hex");
+    .digest("hex");                          //digest term is used for the output when hashing algo is applied on text
   //above expectedSignature is for converting our secret key into same format in which we have secret coming from razorpay
   
   
