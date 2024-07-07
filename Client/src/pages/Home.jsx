@@ -56,7 +56,7 @@ function Home() {
 
         {/* Video */}
         <div className="mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200">
-          <video
+          <video                                                              //    IMP       *******************
             className="shadow-[20px_20px_rgba(255,255,255)]"
             muted
             loop
@@ -80,7 +80,7 @@ function Home() {
             subheading={
               "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
             }
-            ctabtn1={{
+            ctabtn1={{                                    //this is am object
               btnText: "Try it Yourself",
               link: "/signup",
               active: true,
