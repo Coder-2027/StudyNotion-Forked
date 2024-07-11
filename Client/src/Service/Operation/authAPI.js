@@ -17,7 +17,7 @@ const {
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
+    dispatch(setLoading(true))                        //dispatch is used to update info on store it calls action creators which performs some function on store data
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
