@@ -38,7 +38,7 @@ export function sendOtp(email, navigate) {
       toast.error("Could Not Send OTP")
     }
     dispatch(setLoading(false))
-    toast.dismiss(toastId)
+    toast.dismiss(toastId)                                            //To dismiss that specific toast programmatically, call toast.dismiss(toastId).
   }
 }
 
