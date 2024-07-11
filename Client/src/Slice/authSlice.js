@@ -23,6 +23,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setSignupData, setLoading, setToken } = authSlice.actions;
+export const { setSignupData, setLoading, setToken } = authSlice.actions;              //way to create action creators
 
 export default authSlice.reducer;
