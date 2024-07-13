@@ -167,7 +167,8 @@ exports.sendotp = async (req, res) => {                            //will be cal
   try {
     const { email } = req.body;
 
-    const checkUserPresent = await User.findOne({ email });
+    const checkUserPresent = await User.findOne({ email });                  //using findOne, if not present then it returns null while if only find was usde t
+    // hen it would have returned us an empty array making below if condition true thus terminating our program
 
     if (checkUserPresent) {
       return res.status(401).json({
